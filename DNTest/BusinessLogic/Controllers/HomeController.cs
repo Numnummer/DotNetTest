@@ -1,3 +1,4 @@
+using BusinessLogic.Database;
 using BusinessLogic.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -7,14 +8,17 @@ namespace BusinessLogic.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly GameDbContext _gameDbContext;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, GameDbContext gameDbContext)
         {
             _logger = logger;
+            _gameDbContext = gameDbContext;
         }
 
         public IActionResult Index()
         {
+
             return View();
         }
 
