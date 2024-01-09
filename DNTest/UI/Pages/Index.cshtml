@@ -5,11 +5,61 @@
 }
 @using Models
 
-@if (Model.IsGameEnded)
+
+@if (Model.FightLog!=null)
 {
     <form method="post">
-        <input type="submit" asp-page-handler="Restart" value="Restart" />
+        <div class="formItem">
+            <label>Hit points</label>
+            <input type="number" name="Player.HitPoints" />
+        </div>
+        @if (Model.FightLog.Last().PlayerHP<=0)
+        {
+            <input type="submit" value="Fight" disabled />
+        }
+        else
+        {
+            <input type="submit" value="Fight" />
+        }
     </form>
+    @foreach (var roundLog in Model.FightLog)
+    {
+        <h2>Round @roundLog.Number</h2>
+        <h3>@roundLog.PlayerName</h3>
+
+        @roundLog.PlayerDiceRoll
+        @if (roundLog.IsPlayerDoDamage)
+        {
+            <text>
+                more than @roundLog.MonsterAC Hit @roundLog.PlayerDamage
+                points of damage to @roundLog.MonsterName (@roundLog.MonsterHP)
+            </text>
+        }
+        else
+        {
+            <text>
+                less than @roundLog.MonsterAC miss
+            </text>
+        }
+
+        <h3>@roundLog.MonsterName</h3>
+
+        @roundLog.MonsterDiceRoll
+        @if (roundLog.IsMonsterDoDamage)
+        {
+            <text>
+                more than @roundLog.PlayerAC Hit @roundLog.MonsterDamage
+                points of damage to @roundLog.PlayerName (@roundLog.PlayerHP)
+            </text>
+        }
+        else
+        {
+            <text>
+                less than @roundLog.PlayerAC miss
+            </text>
+        }
+
+    }
 }
 else
 {
@@ -30,11 +80,10 @@ else
                 {
                     <label>IncorrectType</label>
                 }
+                <span asp-validation-for="Player.@property.Name" class="text-danger"></span>
             </div>
-            @Html.ValidationMessage(property.Name)
         }
         <input type="submit" value="Fight" />
 
     </form>
 }
-

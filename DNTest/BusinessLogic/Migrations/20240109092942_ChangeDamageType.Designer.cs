@@ -3,6 +3,7 @@ using System;
 using BusinessLogic.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BusinessLogic.Migrations
 {
     [DbContext(typeof(GameDbContext))]
-    partial class GameDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240109092942_ChangeDamageType")]
+    partial class ChangeDamageType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,57 +59,57 @@ namespace BusinessLogic.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("390d5ae7-7be4-4eae-bd64-748fafa0a049"),
-                            AC = 3,
-                            AttackModifier = 10,
-                            AttackPerRound = 3,
+                            Id = new Guid("c031b307-6e59-4377-907d-86adc1ec324e"),
+                            AC = 9,
+                            AttackModifier = 7,
+                            AttackPerRound = 5,
                             Damage = "1d20",
-                            DamageModifier = 1,
-                            HitPoints = 26,
+                            DamageModifier = 3,
+                            HitPoints = 8,
                             Name = "Monster1"
                         },
                         new
                         {
-                            Id = new Guid("4dffb04a-44ec-4c32-bce3-2f5cac57a993"),
-                            AC = 13,
-                            AttackModifier = 1,
+                            Id = new Guid("587596d8-a08c-4029-b0a7-ba801364a61f"),
+                            AC = 5,
+                            AttackModifier = 4,
                             AttackPerRound = 1,
                             Damage = "1d8",
-                            DamageModifier = 4,
-                            HitPoints = 46,
+                            DamageModifier = 3,
+                            HitPoints = 26,
                             Name = "Monster2"
                         },
                         new
                         {
-                            Id = new Guid("ffaa3f1d-a1e6-4a38-8550-dde3922cee63"),
-                            AC = 15,
-                            AttackModifier = 2,
-                            AttackPerRound = 4,
+                            Id = new Guid("b391e892-99bf-4e48-965a-d19700fadd82"),
+                            AC = 19,
+                            AttackModifier = 8,
+                            AttackPerRound = 2,
                             Damage = "2d4",
-                            DamageModifier = 4,
-                            HitPoints = 21,
+                            DamageModifier = 1,
+                            HitPoints = 1,
                             Name = "Monster3"
                         },
                         new
                         {
-                            Id = new Guid("07cc2e2f-e7e9-4602-a152-84443ce179d9"),
-                            AC = 12,
-                            AttackModifier = 8,
-                            AttackPerRound = 4,
+                            Id = new Guid("666e3a10-7f73-492e-998d-8629922b7873"),
+                            AC = 15,
+                            AttackModifier = 5,
+                            AttackPerRound = 2,
                             Damage = "1d10",
-                            DamageModifier = 3,
-                            HitPoints = 4,
+                            DamageModifier = 2,
+                            HitPoints = 27,
                             Name = "Monster4"
                         },
                         new
                         {
-                            Id = new Guid("38c7eda9-f9d2-4ae0-8bd6-3bdf5fa6c69a"),
-                            AC = 13,
-                            AttackModifier = 3,
-                            AttackPerRound = 1,
+                            Id = new Guid("49b62e77-ddfb-430c-8996-b85806be91ff"),
+                            AC = 3,
+                            AttackModifier = 9,
+                            AttackPerRound = 5,
                             Damage = "1d12",
-                            DamageModifier = 3,
-                            HitPoints = 24,
+                            DamageModifier = 5,
+                            HitPoints = 13,
                             Name = "Monster5"
                         });
                 });

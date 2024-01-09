@@ -8,5 +8,7 @@ namespace Models
 {
     public class RoundLog
     {
+        public Player? Player { get; set; }
+        public Monster? Monster { get; set; }
     }
 }

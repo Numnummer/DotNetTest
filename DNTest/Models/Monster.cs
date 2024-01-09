@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Models
 {
-    public class Monster
+    public class Monster : IActor
     {
         [Key]
         public Guid Id { get; set; }
@@ -20,7 +20,7 @@ namespace Models
 
         public int AttackPerRound { get; set; }
 
-        public int Damage { get; set; }
+        public string? Damage { get; set; }
 
         public int DamageModifier { get; set; }
 
