@@ -3,8 +3,36 @@
 @{
     ViewData["Title"] = "Home page";
 }
+@using Models
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+@if (Model.IsGameEnded)
+{
+
+}
+else
+{
+    <form method="post">
+        @foreach (var property in typeof(Player).GetProperties())
+        {
+            <div class="formItem">
+                <label>@property.Name</label>
+                @if (property.PropertyType==typeof(string))
+                {
+                    <input type="text" name="Player.@property.Name" />
+                }
+                else if (property.PropertyType==typeof(int))
+                {
+                    <input type="number" name="Player.@property.Name" />
+                }
+                else
+                {
+                    <label>IncorrectType</label>
+                }
+            </div>
+            @Html.ValidationMessage(property.Name)
+        }
+        <input type="submit" value="Fight" />
+
+    </form>
+}
+

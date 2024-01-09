@@ -6,7 +6,7 @@ namespace Models
     {
         [Required]
         [MinLength(2, ErrorMessage = "Name must have more than 1 character")]
-        public string? UserName { get; set; }
+        public string? Name { get; set; }
 
         [Required]
         [Range(1, 50, ErrorMessage = "HP must be in range 1-50")]
