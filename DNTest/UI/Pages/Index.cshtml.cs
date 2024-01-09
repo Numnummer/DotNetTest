@@ -11,6 +11,8 @@ namespace UI.Pages
 
         [BindProperty]
         public Player Player { get; set; }
+
+        public RoundLog[] FightLog { get; set; }
         public bool IsGameEnded { get; set; }
 
         public IndexModel(ILogger<IndexModel> logger, IConfiguration configuration)
@@ -29,8 +31,18 @@ namespace UI.Pages
         {
             if (!ModelState.IsValid) return;
             var client = new HttpClient();
-            var result = await client.PostAsJsonAsync(_configuration["BL_Path"], Player);
-            IsGameEnded=true;
+            var response = await client.PostAsJsonAsync(_configuration["BL_Path"], Player);
+            var log = await response.Content.ReadFromJsonAsync<RoundLog[]>();
+            if (log!=null)
+            {
+                IsGameEnded=true;
+                FightLog=log;
+            }
+        }
+
+        public void OnPostRestart()
+        {
+            IsGameEnded=false;
         }
     }
 }

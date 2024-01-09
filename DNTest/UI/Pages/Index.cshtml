@@ -7,7 +7,9 @@
 
 @if (Model.IsGameEnded)
 {
-
+    <form method="post">
+        <input type="submit" asp-page-handler="Restart" value="Restart" />
+    </form>
 }
 else
 {
