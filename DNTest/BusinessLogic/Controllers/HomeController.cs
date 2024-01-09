@@ -3,6 +3,7 @@ using BusinessLogic.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Models;
+using Models.ModelClasses;
 using System.Diagnostics;
 
 namespace BusinessLogic.Controllers

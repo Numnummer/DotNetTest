@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Models.Interfaces;
 
-namespace Models
+namespace Models.ModelClasses
 {
     public class Player : IActor
     {

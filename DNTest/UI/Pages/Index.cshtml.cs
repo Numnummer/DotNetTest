@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Models;
+using Models.Dtos;
+using Models.ModelClasses;
 
 namespace UI.Pages
 {
@@ -31,6 +32,7 @@ namespace UI.Pages
             var client = new HttpClient();
             var response = await client.PostAsJsonAsync(_configuration["BL_Path"], Player);
             FightLog = await response.Content.ReadFromJsonAsync<RoundLogDto[]>();
+            Player.HitPoints=FightLog.Last().PlayerHP;
             return Page();
         }
 

@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Home page";
 }
-@using Models
+@    using Models
 
 
 @if (Model.FightLog!=null)
@@ -11,11 +11,11 @@
     <form method="post">
         <div class="formItem">
             <label>Hit points</label>
-            <input type="number" name="Player.HitPoints" />
+            <input type="number" name="Player.HitPoints" value="@Model.FightLog.Last().PlayerHP" />
         </div>
         @if (Model.FightLog.Last().PlayerHP<=0)
         {
-            <input type="submit" value="Fight" disabled />
+
         }
         else
         {
@@ -25,38 +25,61 @@
     @foreach (var roundLog in Model.FightLog)
     {
         <h2>Round @roundLog.Number</h2>
-        <h3>@roundLog.PlayerName</h3>
 
-        @roundLog.PlayerDiceRoll
-        @if (roundLog.IsPlayerDoDamage)
+        @if (roundLog.PlayerHP>0)
         {
-            <text>
-                more than @roundLog.MonsterAC Hit @roundLog.PlayerDamage
-                points of damage to @roundLog.MonsterName (@roundLog.MonsterHP)
-            </text>
-        }
-        else
-        {
-            <text>
-                less than @roundLog.MonsterAC miss
-            </text>
+            <h3>@roundLog.PlayerName</h3>
+
+            @roundLog.PlayerDiceRoll
+            @if (roundLog.IsPlayerDoDamage)
+            {
+                <text>
+                    more than @roundLog.MonsterAC Hit @roundLog.PlayerDamage
+                    points of damage to @roundLog.MonsterName
+                </text>
+                @if (roundLog.MonsterHP>0)
+                {
+                    <text> (@roundLog.MonsterHP)</text>
+                }
+                else
+                {
+                    <text> (0) YOU WIN</text>
+                }
+            }
+            else
+            {
+                <text>
+                    less than @roundLog.MonsterAC miss
+                </text>
+            }
         }
 
-        <h3>@roundLog.MonsterName</h3>
+        @if (roundLog.MonsterHP>0)
+        {
+            <h3>@roundLog.MonsterName</h3>
 
-        @roundLog.MonsterDiceRoll
-        @if (roundLog.IsMonsterDoDamage)
-        {
-            <text>
-                more than @roundLog.PlayerAC Hit @roundLog.MonsterDamage
-                points of damage to @roundLog.PlayerName (@roundLog.PlayerHP)
-            </text>
-        }
-        else
-        {
-            <text>
-                less than @roundLog.PlayerAC miss
-            </text>
+            @roundLog.MonsterDiceRoll
+            @if (roundLog.IsMonsterDoDamage)
+            {
+                <text>
+                    more than @roundLog.PlayerAC Hit @roundLog.MonsterDamage
+                    points of damage to @roundLog.PlayerName
+                </text>
+                @if (roundLog.PlayerHP>0)
+                {
+                    <text> (@roundLog.PlayerHP)</text>
+                }
+                else
+                {
+                    <text> (0) @roundLog.MonsterName WIN</text>
+                }
+            }
+            else
+            {
+                <text>
+                    less than @roundLog.PlayerAC miss
+                </text>
+            }
         }
 
     }

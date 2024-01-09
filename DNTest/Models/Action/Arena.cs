@@ -5,8 +5,11 @@ using System.Numerics;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Models.Dtos;
+using Models.Interfaces;
+using Models.ModelClasses;
 
-namespace Models
+namespace Models.Action
 {
     public class Arena
     {
@@ -20,7 +23,7 @@ namespace Models
                 currentRound = Round(roundNumber, player, monster, out var logDto);
                 rounds.Enqueue(logDto);
                 roundNumber++;
-            } while (currentRound.Player.HitPoints>0 && currentRound.Monster.HitPoints>0);
+            } while (currentRound.Player.HitPoints > 0 && currentRound.Monster.HitPoints > 0);
             return rounds.ToArray();
         }
 
@@ -28,11 +31,11 @@ namespace Models
         {
             var logDto = new RoundLogDto()
             {
-                MonsterName=monster.Name,
-                PlayerName=player.Name,
+                MonsterName = monster.Name,
+                PlayerName = player.Name,
                 Number = number,
-                PlayerAC=player.AC,
-                MonsterAC=monster.AC
+                PlayerAC = player.AC,
+                MonsterAC = monster.AC
             };
             var log = new RoundLog()
             {
@@ -41,47 +44,49 @@ namespace Models
             };
             var playerDamage = Attack(player, monster, out var playerDiceRoll, out var playerDamageDto, out var isPlayerAttack);
             log.Monster.HitPoints -= playerDamage;
-            logDto.PlayerDiceRoll=playerDiceRoll;
-            logDto.PlayerDamage=playerDamageDto;
-            logDto.IsPlayerDoDamage=isPlayerAttack;
-            logDto.MonsterHP=log.Monster.HitPoints;
+            logDto.PlayerDiceRoll = playerDiceRoll;
+            logDto.PlayerDamage = playerDamageDto;
+            logDto.IsPlayerDoDamage = isPlayerAttack;
+            logDto.MonsterHP = log.Monster.HitPoints;
+            logDto.PlayerHP = log.Player.HitPoints;
 
-            if (log.Monster.HitPoints<=0)
+            if (log.Monster.HitPoints <= 0)
             {
-                dto=logDto;
+                dto = logDto;
                 return log;
             }
 
             var mosterDamage = Attack(monster, player, out var monsterDiceRoll, out var monsterDamageDto, out var isMonsterAttack);
             log.Player.HitPoints -= mosterDamage;
 
-            logDto.PlayerHP=log.Player.HitPoints;
-            logDto.MonsterDiceRoll=monsterDiceRoll;
-            logDto.MonsterDamage=monsterDamageDto;
-            logDto.IsMonsterDoDamage=isMonsterAttack;
+            logDto.PlayerHP = log.Player.HitPoints;
+            logDto.MonsterHP = log.Monster.HitPoints;
+            logDto.MonsterDiceRoll = monsterDiceRoll;
+            logDto.MonsterDamage = monsterDamageDto;
+            logDto.IsMonsterDoDamage = isMonsterAttack;
 
-            dto=logDto;
+            dto = logDto;
             return log;
         }
 
         private int Attack(IActor actor, IActor enemy, out int diceRoll, out int damageDto, out bool isAttack)
         {
             var actorRollResult = DiceRoll();
-            diceRoll=actorRollResult.Item1;
-            if (actorRollResult.Item2 && actorRollResult.Item1>enemy.AC)
+            diceRoll = actorRollResult.Item1;
+            if (actorRollResult.Item2 && actorRollResult.Item1 > enemy.AC)
             {
                 var damage = 0;
-                for (var i = 0; i<actor.AttackPerRound; i++)
+                for (var i = 0; i < actor.AttackPerRound; i++)
                 {
-                    damage+=DiceRollDamage(actor);
+                    damage += DiceRollDamage(actor);
                 }
-                var actorDamage = damage+actor.AttackModifier+actor.DamageModifier;
+                var actorDamage = damage + actor.AttackModifier + actor.DamageModifier;
                 if (actorRollResult.Item3)
                 {
-                    actorDamage*=2;
+                    actorDamage *= 2;
                 }
-                damageDto=actorDamage;
-                isAttack=true;
+                damageDto = actorDamage;
+                isAttack = true;
                 return actorDamage;
             }
             damageDto = 0;
@@ -98,7 +103,7 @@ namespace Models
             var random = new Random();
             for (var i = 0; i < count; i++)
             {
-                actualDamage+=random.Next(maxDamage+1);
+                actualDamage += random.Next(maxDamage + 1);
             }
             return actualDamage;
         }
@@ -107,7 +112,7 @@ namespace Models
         {
             var maxDamage = 20;
             var random = new Random();
-            var result = random.Next(maxDamage+1);
+            var result = random.Next(maxDamage + 1);
 
             if (result == 1 && maxDamage == 20)
             {

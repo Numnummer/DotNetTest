@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Models;
+using Models.Action;
+using Models.ModelClasses;
 
 namespace BusinessLogic.Database
 {

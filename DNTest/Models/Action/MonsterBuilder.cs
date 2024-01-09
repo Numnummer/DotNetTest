@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Models.ModelClasses;
 
-namespace Models
+namespace Models.Action
 {
     public static class MonsterBuilder
     {
@@ -13,14 +14,14 @@ namespace Models
             var random = new Random();
             return new Monster()
             {
-                Id=Guid.NewGuid(),
+                Id = Guid.NewGuid(),
                 Name = name,
-                HitPoints=random.Next(1, 51),
-                AttackModifier=random.Next(1, 11),
-                AttackPerRound=random.Next(1, 6),
-                Damage=damage,
-                DamageModifier=random.Next(1, 6),
-                AC=random.Next(1, 16)
+                HitPoints = random.Next(1, 51),
+                AttackModifier = random.Next(1, 11),
+                AttackPerRound = random.Next(1, 6),
+                Damage = damage,
+                DamageModifier = random.Next(1, 6),
+                AC = random.Next(1, 16)
             };
         }
     }
