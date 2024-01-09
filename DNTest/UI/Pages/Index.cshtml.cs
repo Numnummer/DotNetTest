@@ -36,5 +36,14 @@ namespace UI.Pages
             return Page();
         }
 
+        public async Task<IActionResult> OnPostNewFigth()
+        {
+            var client = new HttpClient();
+            var response = await client.PostAsJsonAsync(_configuration["BL_Path"], Player);
+            FightLog = await response.Content.ReadFromJsonAsync<RoundLogDto[]>();
+            Player.HitPoints=FightLog.Last().PlayerHP;
+            return Page();
+        }
+
     }
 }
