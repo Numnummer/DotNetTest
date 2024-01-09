@@ -3,8 +3,111 @@
 @{
     ViewData["Title"] = "Home page";
 }
+@using Models
+@using Models.ModelClasses
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+
+@if (Model.FightLog!=null)
+{
+    <form method="post">
+        <div class="formItem">
+            <label>Hit points</label>
+            <input type="number" name="Player.HitPoints" value="@Model.FightLog.Last().PlayerHP" />
+        </div>
+        @if (Model.FightLog.Last().PlayerHP<=0)
+        {
+
+        }
+        else
+        {
+            <input type="submit" value="Fight" asp-page-handler="NewFigth" />
+        }
+    </form>
+    @foreach (var roundLog in Model.FightLog)
+    {
+        <h2>Round @roundLog.Number</h2>
+
+        @if (roundLog.PlayerHP>0)
+        {
+            <h3>@roundLog.PlayerName</h3>
+
+            @roundLog.PlayerDiceRoll
+            @if (roundLog.IsPlayerDoDamage)
+            {
+                <text>
+                    more than @roundLog.MonsterAC Hit @roundLog.PlayerDamage
+                    points of damage to @roundLog.MonsterName
+                </text>
+                @if (roundLog.MonsterHP>0)
+                {
+                    <text> (@roundLog.MonsterHP)</text>
+                }
+                else
+                {
+                    <text> (0) YOU WIN</text>
+                }
+            }
+            else
+            {
+                <text>
+                    less than @roundLog.MonsterAC miss
+                </text>
+            }
+        }
+
+        @if (roundLog.MonsterHP>0)
+        {
+            <h3>@roundLog.MonsterName</h3>
+
+            @roundLog.MonsterDiceRoll
+            @if (roundLog.IsMonsterDoDamage)
+            {
+                <text>
+                    more than @roundLog.PlayerAC Hit @roundLog.MonsterDamage
+                    points of damage to @roundLog.PlayerName
+                </text>
+                @if (roundLog.PlayerHP>0)
+                {
+                    <text> (@roundLog.PlayerHP)</text>
+                }
+                else
+                {
+                    <text> (0) @roundLog.MonsterName WIN</text>
+                }
+            }
+            else
+            {
+                <text>
+                    less than @roundLog.PlayerAC miss
+                </text>
+            }
+        }
+
+    }
+}
+else
+{
+    <form method="post">
+        @foreach (var property in typeof(Player).GetProperties())
+        {
+            <div class="formItem">
+                <label>@property.Name</label>
+                @if (property.PropertyType==typeof(string))
+                {
+                    <input type="text" name="Player.@property.Name" />
+                }
+                else if (property.PropertyType==typeof(int))
+                {
+                    <input type="number" name="Player.@property.Name" />
+                }
+                else
+                {
+                    <label>IncorrectType</label>
+                }
+                <span asp-validation-for="Player.@property.Name" class="text-danger"></span>
+            </div>
+        }
+        <input type="submit" value="Fight" />
+
+    </form>
+}

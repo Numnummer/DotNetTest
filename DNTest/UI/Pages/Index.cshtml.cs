@@ -1,20 +1,49 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Models.Dtos;
+using Models.ModelClasses;
 
 namespace UI.Pages
 {
     public class IndexModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
+        private readonly IConfiguration _configuration;
 
-        public IndexModel(ILogger<IndexModel> logger)
+        [BindProperty]
+        public Player Player { get; set; }
+
+        public RoundLogDto[]? FightLog { get; set; }
+
+        public IndexModel(ILogger<IndexModel> logger, IConfiguration configuration)
         {
             _logger = logger;
+            _configuration=configuration;
         }
 
         public void OnGet()
         {
 
         }
+
+        public async Task<IActionResult> OnPost()
+        {
+            if (!ModelState.IsValid) return Page();
+            var client = new HttpClient();
+            var response = await client.PostAsJsonAsync(_configuration["BL_Path"], Player);
+            FightLog = await response.Content.ReadFromJsonAsync<RoundLogDto[]>();
+            Player.HitPoints=FightLog.Last().PlayerHP;
+            return Page();
+        }
+
+        public async Task<IActionResult> OnPostNewFigth()
+        {
+            var client = new HttpClient();
+            var response = await client.PostAsJsonAsync(_configuration["BL_Path"], Player);
+            FightLog = await response.Content.ReadFromJsonAsync<RoundLogDto[]>();
+            Player.HitPoints=FightLog.Last().PlayerHP;
+            return Page();
+        }
+
     }
 }
